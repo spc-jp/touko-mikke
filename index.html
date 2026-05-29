@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>投稿みっけ｜バズる投稿文が3秒で出てくる</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+    background: #f5f0e8;
+    min-height: 100vh;
+    color: #3a3228;
+    padding: 20px;
+  }
+  .container { max-width: 720px; margin: 0 auto; }
+
+  .hero {
+    text-align: center;
+    padding: 40px 20px 30px;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: #c8845a;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px 16px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+  .hero h1 {
+    font-size: 34px;
+    font-weight: 900;
+    color: #3a3228;
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+  .hero h1 span { color: #c8845a; }
+  .hero p {
+    color: #7a6a5a;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #e8dfd4;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .card-title {
+    font-size: 13px;
+    color: #c8845a;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid #f0e8dc;
+    padding-bottom: 12px;
+  }
+
+  .genre-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .genre-btn {
+    background: #faf7f3;
+    border: 2px solid #e8dfd4;
+    border-radius: 12px;
+    color: #5a4a3a;
+    font-size: 14px;
+    padding: 14px 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    line-height: 1.6;
+  }
+  .genre-btn:hover { border-color: #c8845a; background: #fdf5ee; }
+  .genre-btn.active { border-color: #c8845a; background: #fdf0e6; color: #c8845a; font-weight: bold; }
+  .genre-btn span { font-size: 11px; color: #9a8a7a; display: block; }
+  .genre-btn.active span { color: #c8845a; }
+
+  .format-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .format-btn {
+    background: #faf7f3;
+    border: 2px solid #e8dfd4;
+    border-radius: 12px;
+    color: #5a4a3a;
+    font-size: 13px;
+    padding: 13px 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    line-height: 1.6;
+  }
+  .format-btn:hover { border-color: #c8845a; background: #fdf5ee; }
+  .format-btn.active { border-color: #c8845a; background: #fdf0e6; color: #c8845a; font-weight: bold; }
+  .format-btn span { font-size: 11px; color: #9a8a7a; display: block; }
+  .format-btn.active span { color: #c8845a; }
+
+  .platform-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .platform-btn {
+    background: #faf7f3;
+    border: 2px solid #e8dfd4;
+    border-radius: 12px;
+    color: #5a4a3a;
+    font-size: 14px;
+    padding: 14px 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    font-weight: bold;
+  }
+  .platform-btn:hover { border-color: #c8845a; background: #fdf5ee; }
+  .platform-btn.active { border-color: #c8845a; background: #fdf0e6; color: #c8845a; }
+
+  textarea {
+    width: 100%;
+    background: #faf7f3;
+    border: 1px solid #e8dfd4;
+    border-radius: 12px;
+    color: #3a3228;
+    font-size: 15px;
+    padding: 14px;
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.8;
+    outline: none;
+    transition: border 0.2s;
+  }
+  textarea:focus { border-color: #c8845a; background: #fff; }
+  textarea::placeholder { color: #bbb0a0; }
+
+  input[type="url"], input[type="text"] {
+    width: 100%;
+    background: #faf7f3;
+    border: 1px solid #e8dfd4;
+    border-radius: 12px;
+    color: #3a3228;
+    font-size: 15px;
+    padding: 14px;
+    font-family: inherit;
+    line-height: 1.8;
+    outline: none;
+    transition: border 0.2s;
+  }
+  input[type="url"]:focus, input[type="text"]:focus { border-color: #c8845a; background: #fff; }
+  input::placeholder { color: #bbb0a0; }
+
+  .hint {
+    font-size: 12px;
+    color: #9a8a7a;
+    margin-top: 10px;
+    line-height: 1.7;
+    background: #faf7f3;
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+
+  .cta-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .cta-type-btn {
+    background: #faf7f3;
+    border: 2px solid #e8dfd4;
+    border-radius: 12px;
+    color: #5a4a3a;
+    font-size: 13px;
+    padding: 12px 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    line-height: 1.6;
+  }
+  .cta-type-btn:hover { border-color: #c8845a; background: #fdf5ee; }
+  .cta-type-btn.active { border-color: #c8845a; background: #fdf0e6; color: #c8845a; font-weight: bold; }
+  .cta-type-btn span { font-size: 11px; color: #9a8a7a; display: block; }
+  .cta-type-btn.active span { color: #c8845a; }
+
+  .url-input-wrap { margin-top: 4px; }
+  .url-label {
+    font-size: 12px;
+    color: #9a8a7a;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .note-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f0faf5;
+    border: 1px solid #b0ddc0;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: #3a7a54;
+    margin-bottom: 12px;
+    font-weight: bold;
+  }
+
+  .generate-btn {
+    width: 100%;
+    background: linear-gradient(90deg, #c8845a, #e8a070);
+    border: none;
+    border-radius: 14px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 900;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 14px rgba(200,132,90,0.35);
+  }
+  .generate-btn:hover { opacity: 0.88; transform: translateY(-2px); }
+  .generate-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .loading {
+    display: none;
+    text-align: center;
+    padding: 40px 20px;
+    color: #9a8a7a;
+    font-size: 15px;
+    background: #fff;
+    border-radius: 16px;
+    margin-bottom: 18px;
+    border: 1px solid #e8dfd4;
+  }
+  .loading-dots span {
+    display: inline-block;
+    animation: bounce 1.2s infinite;
+    font-size: 26px;
+  }
+  .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce {
+    0%,80%,100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+  }
+
+  .result-section { display: none; }
+
+  .result-heading {
+    font-size: 14px;
+    font-weight: bold;
+    color: #5a4a3a;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .result-box {
+    background: #fff;
+    border: 1px solid #e8dfd4;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 14px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .result-pattern-label {
+    font-size: 12px;
+    font-weight: bold;
+    color: #c8845a;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f0e8dc;
+  }
+  .result-text {
+    color: #3a3228;
+    font-size: 15px;
+    line-height: 1.9;
+    white-space: pre-wrap;
+    word-break: break-word;
+    padding-right: 70px;
+  }
+  .cta-line {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed #e8dfd4;
+    color: #c8845a;
+    font-size: 13px;
+    line-height: 1.8;
+    font-weight: bold;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: #fdf0e6;
+    border: 1px solid #c8845a;
+    border-radius: 8px;
+    color: #c8845a;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .copy-btn:hover { background: #c8845a; color: #fff; }
+  .copy-btn.copied { background: #e8f5e9; border-color: #66bb6a; color: #66bb6a; }
+
+  .hashtag-box {
+    background: #fff;
+    border: 1px solid #e8dfd4;
+    border-left: 4px solid #c8845a;
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 16px;
+  }
+  .hashtag-label { font-size: 12px; color: #c8845a; font-weight: bold; margin-bottom: 8px; }
+  .hashtag-text { color: #5a4a3a; font-size: 14px; line-height: 1.9; }
+
+  .alert-box {
+    background: #fff8f0;
+    border: 1px solid #f0c8a0;
+    border-left: 4px solid #e88040;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    font-size: 13px;
+    color: #7a5030;
+    line-height: 1.8;
+  }
+  .alert-title { font-weight: bold; color: #c86030; margin-bottom: 6px; }
+
+  .reset-btn {
+    width: 100%;
+    background: #fff;
+    border: 2px solid #e8dfd4;
+    border-radius: 12px;
+    color: #9a8a7a;
+    font-size: 14px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 40px;
+    font-weight: bold;
+  }
+  .reset-btn:hover { border-color: #c8845a; color: #c8845a; background: #fdf5ee; }
+
+  .footer {
+    text-align: center;
+    color: #b0a090;
+    font-size: 12px;
+    padding-bottom: 40px;
+    line-height: 2;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hero">
+    <div class="hero-badge">✨ SNS投稿 AI生成ツール</div>
+    <h1>投稿<span>みっけ</span></h1>
+    <p>ネタを入れるだけで<br>バズる投稿文が3パターン出てくる</p>
+  </div>
+
+  <!-- STEP1 -->
+  <div class="card">
+    <div class="card-title">📌 STEP 1｜投稿のジャンルを選ぶ</div>
+    <div class="genre-grid">
+      <button class="genre-btn" onclick="selectGenre(this, '学び（ノウハウ・時短術）')">
+        📚 学び<span>ノウハウ・時短術</span>
+      </button>
+      <button class="genre-btn" onclick="selectGenre(this, '気づき（視点の転換・発見）')">
+        💡 気づき<span>視点の転換・発見</span>
+      </button>
+      <button class="genre-btn" onclick="selectGenre(this, 'ストーリー（体験談・失敗談）')">
+        📖 ストーリー<span>体験談・失敗談</span>
+      </button>
+      <button class="genre-btn" onclick="selectGenre(this, 'エンタメ（笑い・驚き・共感）')">
+        🎭 エンタメ<span>笑い・驚き・共感</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP2 -->
+  <div class="card">
+    <div class="card-title">✏️ STEP 2｜伝えたいネタを入力する</div>
+    <textarea id="neta" rows="5" placeholder="例：先日クライアントの税理士事務所から相談があって、SNSで発信しているのに全然反応がない、と言われた。聞いてみたら投稿の1行目が「〇〇のご案内です」から始まっていた。そこが問題だと気づいた。"></textarea>
+    <div class="hint">💬 2〜5行くらいで大丈夫です。特別な経験でなくてもOK。日常の気づきや失敗談もネタになります。</div>
+  </div>
+
+  <!-- STEP3 -->
+  <div class="card">
+    <div class="card-title">🏗️ STEP 3｜投稿の型を選ぶ</div>
+    <div class="format-grid">
+      <button class="format-btn" onclick="selectFormat(this, 'あるある共感型（読者の悩みを代弁する）')">
+        😅 あるある共感型<span>悩みを代弁する</span>
+      </button>
+      <button class="format-btn" onclick="selectFormat(this, '失敗→学び型（ネガティブから反省と気づきへ）')">
+        🔄 失敗→学び型<span>反省と気づきへ</span>
+      </button>
+      <button class="format-btn" onclick="selectFormat(this, 'セリフ・会話型（臨場感のある会話形式）')">
+        💬 セリフ・会話型<span>臨場感のある形式</span>
+      </button>
+      <button class="format-btn" onclick="selectFormat(this, '3段構成型（フック→原因→誘導の導線設計）')">
+        📐 3段構成型<span>フック→原因→誘導</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP4 -->
+  <div class="card">
+    <div class="card-title">📱 STEP 4｜投稿先を選ぶ</div>
+    <div class="platform-grid">
+      <button class="platform-btn" onclick="selectPlatform(this, 'Threads')">🧵 Threads</button>
+      <button class="platform-btn" onclick="selectPlatform(this, 'X（旧Twitter）')">𝕏 X</button>
+      <button class="platform-btn" onclick="selectPlatform(this, 'ThreadsとX両方')">✨ 両方</button>
+    </div>
+  </div>
+
+  <!-- STEP5 -->
+  <div class="card">
+    <div class="card-title">🔗 STEP 5｜集客先URLと誘導スタイルを設定する</div>
+
+    <div class="note-badge">
+      📝 note・みっけシリーズアプリ など集客先URLを入れると<br>投稿文の最後にCTAが自動で入ります
+    </div>
+
+    <div class="cta-type-grid">
+      <button class="cta-type-btn" onclick="selectCtaType(this, 'note記事（有料・無料）')">
+        📝 note記事<span>有料・無料記事へ誘導</span>
+      </button>
+      <button class="cta-type-btn" onclick="selectCtaType(this, 'みっけシリーズアプリ')">
+        🛠️ みっけアプリ<span>アプリページへ誘導</span>
+      </button>
+      <button class="cta-type-btn" onclick="selectCtaType(this, 'noteプロフィール・マガジン')">
+        👤 noteプロフィール<span>フォロー・マガジン誘導</span>
+      </button>
+      <button class="cta-type-btn" onclick="selectCtaType(this, 'Webサイト・LP')">
+        🌐 Webサイト・LP<span>サービス紹介ページへ</span>
+      </button>
+    </div>
+
+    <div class="url-input-wrap">
+      <span class="url-label">集客先のURLを入力してください（任意）</span>
+      <input type="url" id="ctaUrl" placeholder="https://note.com/yoshibon/n/xxxxxxxx" />
+    </div>
+
+    <div class="hint" style="margin-top:12px">
+      💡 URLを入れると投稿文の最後に自然なCTAが自動で追加されます。<br>
+      X選択時は「リプライ欄にURLを貼る」ことをおすすめするアドバイスも表示されます。
+    </div>
+  </div>
+
+  <!-- 生成ボタン -->
+  <button class="generate-btn" id="generateBtn" onclick="generate()">
+    🔥 バズる投稿文を生成する
+  </button>
+
+  <!-- ローディング -->
+  <div class="loading" id="loading">
+    <div class="loading-dots"><span>✨</span><span>✨</span><span>✨</span></div>
+    <p style="margin-top:16px">AIが投稿文を考えています...<br>少々お待ちください</p>
+  </div>
+
+  <!-- 結果 -->
+  <div class="result-section" id="resultSection">
+
+    <div class="alert-box" id="algorithmAlert" style="display:none">
+      <div class="alert-title">⚠️ アルゴリズム注意 ＆ 投稿のコツ</div>
+      <div id="alertText"></div>
+    </div>
+
+    <div class="result-heading">📝 生成された投稿文（3パターン）</div>
+
+    <div class="result-box">
+      <div class="result-pattern-label">✦ パターン1</div>
+      <button class="copy-btn" onclick="copyFull('result1', 'cta1', this)">コピー</button>
+      <div class="result-text" id="result1"></div>
+      <div class="cta-line" id="cta1" style="display:none"></div>
+    </div>
+
+    <div class="result-box">
+      <div class="result-pattern-label">✦ パターン2</div>
+      <button class="copy-btn" onclick="copyFull('result2', 'cta2', this)">コピー</button>
+      <div class="result-text" id="result2"></div>
+      <div class="cta-line" id="cta2" style="display:none"></div>
+    </div>
+
+    <div class="result-box">
+      <div class="result-pattern-label">✦ パターン3</div>
+      <button class="copy-btn" onclick="copyFull('result3', 'cta3', this)">コピー</button>
+      <div class="result-text" id="result3"></div>
+      <div class="cta-line" id="cta3" style="display:none"></div>
+    </div>
+
+    <div class="hashtag-box">
+      <div class="hashtag-label">🏷️ おすすめハッシュタグ（5個以内）</div>
+      <div class="hashtag-text" id="hashtagResult"></div>
+    </div>
+
+    <button class="reset-btn" onclick="resetAll()">🔄 もう一度作る</button>
+  </div>
+
+  <div class="footer">
+    投稿みっけ｜Smile Plus Consulting<br>
+    考えるを、ひとりにしない。
+  </div>
+
+</div>
+
+<script>
+const WORKERS_URL = "https://touko-mikke.yymmatsu.workers.dev";
+
+let selectedGenre = "";
+let selectedFormat = "";
+let selectedPlatform = "";
+let selectedCtaType = "";
+
+function selectGenre(btn, value) {
+  document.querySelectorAll(".genre-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  selectedGenre = value;
+}
+function selectFormat(btn, value) {
+  document.querySelectorAll(".format-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  selectedFormat = value;
+}
+function selectPlatform(btn, value) {
+  document.querySelectorAll(".platform-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  selectedPlatform = value;
+}
+function selectCtaType(btn, value) {
+  document.querySelectorAll(".cta-type-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  selectedCtaType = value;
+}
+
+function copyFull(textId, ctaId, btn) {
+  const text = document.getElementById(textId).innerText;
+  const ctaEl = document.getElementById(ctaId);
+  const cta = ctaEl.style.display !== "none" ? "\n\n" + ctaEl.innerText : "";
+  navigator.clipboard.writeText(text + cta).then(() => {
+    btn.textContent = "✅ コピー済み";
+    btn.classList.add("copied");
+    setTimeout(() => { btn.textContent = "コピー"; btn.classList.remove("copied"); }, 2000);
+  });
+}
+
+function resetAll() {
+  document.querySelectorAll(".genre-btn, .format-btn, .platform-btn, .cta-type-btn").forEach(b => b.classList.remove("active"));
+  document.getElementById("neta").value = "";
+  document.getElementById("ctaUrl").value = "";
+  document.getElementById("resultSection").style.display = "none";
+  document.getElementById("generateBtn").style.display = "block";
+  document.getElementById("generateBtn").disabled = false;
+  selectedGenre = ""; selectedFormat = ""; selectedPlatform = ""; selectedCtaType = "";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function buildCtaText(ctaText, url) {
+  if (!url) return ctaText;
+  return ctaText + "\n" + url;
+}
+
+async function generate() {
+  const neta = document.getElementById("neta").value.trim();
+  const ctaUrl = document.getElementById("ctaUrl").value.trim();
+
+  if (!selectedGenre) { alert("ジャンルを選んでください😊"); return; }
+  if (!neta) { alert("ネタを入力してください😊"); return; }
+  if (!selectedFormat) { alert("投稿の型を選んでください😊"); return; }
+  if (!selectedPlatform) { alert("投稿先を選んでください😊"); return; }
+
+  document.getElementById("generateBtn").disabled = true;
+  document.getElementById("loading").style.display = "block";
+  document.getElementById("resultSection").style.display = "none";
+
+  const isX = selectedPlatform.includes("X");
+  const charLimit = isX ? "140文字以内" : "500文字以内";
+  const hasUrl = ctaUrl !== "";
+  const hasCtaType = selectedCtaType !== "";
+
+  const ctaInstruction = (hasCtaType || hasUrl)
+    ? `
+【CTA（誘導文）のルール】
+・投稿文の本文とは別に、cta1・cta2・cta3キーにCTA文を生成すること。
+・CTA文は1〜2行で自然に読者を誘導する文にすること。
+・集客先の種類：${selectedCtaType || "外部コンテンツ"}
+・投稿の型に合わせてCTAの言い回しを変えること。
+　　あるある型→「同じ悩みを抱えてる方へ、詳しくはこちら」
+　　失敗学び型→「同じ失敗をしたくない方へ、全部まとめました」
+　　セリフ型→「気になった方はプロフィールのリンクから」
+　　3段構成型→「手順とテンプレはこちらにまとめています」
+・URLは含めないこと（URLは別途表示する）
+・${isX ? "Xの場合はリプライ欄にURLを貼ることをalertに追記すること" : "ThreadsはURL直貼りOKなので特記不要"}
+`
+    : `・cta1・cta2・cta3は空文字にすること。`;
+
+  const systemPrompt = `あなたはSNSマーケティングの専門家です。
+ThreadsやX（旧Twitter）でバズる投稿文を作るプロです。
+以下のルールを必ず守って出力してください。
+
+【出力ルール】
+・必ずJSON形式のみで返す。説明文は一切不要。
+・JSONのキーはpattern1, pattern2, pattern3, cta1, cta2, cta3, hashtags, alert の8つ。
+・pattern1〜3はそれぞれ異なるアプローチの投稿文（CTAは含めない）。
+${ctaInstruction}
+・hashtagsは5個以内のハッシュタグ（スペース区切り）。
+・alertはアルゴリズム注意事項があれば記載、なければ空文字。
+
+【投稿文のルール】
+・1文を短く（1〜2行）
+・改行で余白を作る
+・1行目は必ずスクロールを止める強いフック
+・感情トリガー（驚き・共感・好奇心など）を必ず入れる
+・文字数：${charLimit}を目安（CTAは含まない）
+・絵文字を効果的に使う（多すぎず）
+・押しつけがましくない自然な文体
+
+【出力例】
+{"pattern1":"投稿文1","pattern2":"投稿文2","pattern3":"投稿文3","cta1":"CTA文1","cta2":"CTA文2","cta3":"CTA文3","hashtags":"#タグ1 #タグ2","alert":""}`;
+
+  const userPrompt = `以下の条件で投稿文を3パターン作ってください。
+
+ジャンル：${selectedGenre}
+投稿の型：${selectedFormat}
+投稿先：${selectedPlatform}
+集客先の種類：${selectedCtaType || "なし"}
+集客先URL：${ctaUrl || "なし"}
+ネタ・伝えたいこと：
+${neta}`;
+
+  try {
+    const response = await fetch(WORKERS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        system: systemPrompt,
+        messages: [{ role: "user", content: userPrompt }]
+      })
+    });
+
+    const data = await response.json();
+    const rawText = data.content[0].text;
+
+    let result;
+    try {
+      const clean = rawText.replace(/```json|```/g, "").trim();
+      result = JSON.parse(clean);
+    } catch {
+      result = {
+        pattern1: rawText,
+        pattern2: "（パターン2の生成に失敗しました。もう一度お試しください）",
+        pattern3: "（パターン3の生成に失敗しました。もう一度お試しください）",
+        cta1: "", cta2: "", cta3: "",
+        hashtags: "",
+        alert: ""
+      };
+    }
+
+    document.getElementById("result1").textContent = result.pattern1 || "";
+    document.getElementById("result2").textContent = result.pattern2 || "";
+    document.getElementById("result3").textContent = result.pattern3 || "";
+    document.getElementById("hashtagResult").textContent = result.hashtags || "";
+
+    // CTA表示
+    ["1","2","3"].forEach(n => {
+      const ctaEl = document.getElementById("cta" + n);
+      const ctaText = result["cta" + n] || "";
+      if (ctaText && (hasCtaType || hasUrl)) {
+        ctaEl.textContent = ctaUrl ? ctaText + "\n" + ctaUrl : ctaText;
+        ctaEl.style.display = "block";
+      } else {
+        ctaEl.style.display = "none";
+      }
+    });
+
+    // アラート
+    const alertBox = document.getElementById("algorithmAlert");
+    const alertText = document.getElementById("alertText");
+    let alertMsg = result.alert || "";
+    if (isX && ctaUrl) {
+      alertMsg = (alertMsg ? alertMsg + "\n\n" : "") +
+        "⚡ Xはリンクを本文に入れるとリーチが下がります。\nURLはリプライ欄（コメント欄）に別途貼り付けてください。";
+    }
+    if (alertMsg.trim()) {
+      alertText.textContent = alertMsg;
+      alertBox.style.display = "block";
+    } else {
+      alertBox.style.display = "none";
+    }
+
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("resultSection").style.display = "block";
+    document.getElementById("generateBtn").style.display = "none";
+    window.scrollTo({ top: document.getElementById("resultSection").offsetTop - 20, behavior: "smooth" });
+
+  } catch (err) {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("generateBtn").disabled = false;
+    alert("エラーが発生しました。もう一度お試しください。\n" + err.message);
+  }
+}
+</script>
+</body>
+</html>
