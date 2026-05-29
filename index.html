@@ -16,10 +16,7 @@
   }
   .container { max-width: 720px; margin: 0 auto; }
 
-  .hero {
-    text-align: center;
-    padding: 40px 20px 30px;
-  }
+  .hero { text-align: center; padding: 40px 20px 30px; }
   .hero-badge {
     display: inline-block;
     background: #c8845a;
@@ -31,19 +28,9 @@
     margin-bottom: 14px;
     letter-spacing: 1px;
   }
-  .hero h1 {
-    font-size: 34px;
-    font-weight: 900;
-    color: #3a3228;
-    margin-bottom: 10px;
-    line-height: 1.3;
-  }
+  .hero h1 { font-size: 34px; font-weight: 900; color: #3a3228; margin-bottom: 10px; line-height: 1.3; }
   .hero h1 span { color: #c8845a; }
-  .hero p {
-    color: #7a6a5a;
-    font-size: 15px;
-    line-height: 1.8;
-  }
+  .hero p { color: #7a6a5a; font-size: 15px; line-height: 1.8; }
 
   .card {
     background: #fff;
@@ -144,11 +131,10 @@
     font-size: 15px;
     padding: 14px;
     font-family: inherit;
-    line-height: 1.8;
     outline: none;
     transition: border 0.2s;
   }
-  input[type="url"]:focus, input[type="text"]:focus { border-color: #c8845a; background: #fff; }
+  input[type="url"]:focus { border-color: #c8845a; background: #fff; }
   input::placeholder { color: #bbb0a0; }
 
   .hint {
@@ -179,14 +165,7 @@
   .cta-type-btn span { font-size: 11px; color: #9a8a7a; display: block; }
   .cta-type-btn.active span { color: #c8845a; }
 
-  .url-input-wrap { margin-top: 4px; }
-  .url-label {
-    font-size: 12px;
-    color: #9a8a7a;
-    margin-bottom: 8px;
-    display: block;
-  }
-
+  .url-label { font-size: 12px; color: #9a8a7a; margin-bottom: 8px; display: block; }
   .note-badge {
     display: inline-flex;
     align-items: center;
@@ -194,11 +173,13 @@
     background: #f0faf5;
     border: 1px solid #b0ddc0;
     border-radius: 8px;
-    padding: 6px 12px;
+    padding: 8px 12px;
     font-size: 12px;
     color: #3a7a54;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
     font-weight: bold;
+    line-height: 1.7;
+    width: 100%;
   }
 
   .generate-btn {
@@ -243,7 +224,6 @@
   }
 
   .result-section { display: none; }
-
   .result-heading {
     font-size: 14px;
     font-weight: bold;
@@ -287,6 +267,13 @@
     font-size: 13px;
     line-height: 1.8;
     font-weight: bold;
+    white-space: pre-wrap;
+  }
+  .hashtag-line {
+    margin-top: 10px;
+    color: #7a8a9a;
+    font-size: 13px;
+    line-height: 1.8;
   }
   .copy-btn {
     position: absolute;
@@ -305,16 +292,12 @@
   .copy-btn:hover { background: #c8845a; color: #fff; }
   .copy-btn.copied { background: #e8f5e9; border-color: #66bb6a; color: #66bb6a; }
 
-  .hashtag-box {
-    background: #fff;
-    border: 1px solid #e8dfd4;
-    border-left: 4px solid #c8845a;
-    border-radius: 12px;
-    padding: 16px 18px;
-    margin-bottom: 16px;
+  .copy-note {
+    font-size: 11px;
+    color: #b0a090;
+    margin-top: 10px;
+    text-align: right;
   }
-  .hashtag-label { font-size: 12px; color: #c8845a; font-weight: bold; margin-bottom: 8px; }
-  .hashtag-text { color: #5a4a3a; font-size: 14px; line-height: 1.9; }
 
   .alert-box {
     background: #fff8f0;
@@ -420,11 +403,9 @@
   <!-- STEP5 -->
   <div class="card">
     <div class="card-title">🔗 STEP 5｜集客先URLと誘導スタイルを設定する</div>
-
     <div class="note-badge">
-      📝 note・みっけシリーズアプリ など集客先URLを入れると<br>投稿文の最後にCTAが自動で入ります
+      📝 集客先URLを入れると投稿文の最後にCTAが自動で入ります
     </div>
-
     <div class="cta-type-grid">
       <button class="cta-type-btn" onclick="selectCtaType(this, 'note記事（有料・無料）')">
         📝 note記事<span>有料・無料記事へ誘導</span>
@@ -439,15 +420,10 @@
         🌐 Webサイト・LP<span>サービス紹介ページへ</span>
       </button>
     </div>
-
-    <div class="url-input-wrap">
-      <span class="url-label">集客先のURLを入力してください（任意）</span>
-      <input type="url" id="ctaUrl" placeholder="https://note.com/yoshibon/n/xxxxxxxx" />
-    </div>
-
+    <span class="url-label">集客先のURLを入力してください（任意）</span>
+    <input type="url" id="ctaUrl" placeholder="https://note.com/yoshibon/n/xxxxxxxx" />
     <div class="hint" style="margin-top:12px">
-      💡 URLを入れると投稿文の最後に自然なCTAが自動で追加されます。<br>
-      X選択時は「リプライ欄にURLを貼る」ことをおすすめするアドバイスも表示されます。
+      💡 URLを入れると投稿文末尾にCTAが自動追加されます。X選択時はリプライ欄へのURL貼り付けをアドバイスします。
     </div>
   </div>
 
@@ -474,28 +450,29 @@
 
     <div class="result-box">
       <div class="result-pattern-label">✦ パターン1</div>
-      <button class="copy-btn" onclick="copyFull('result1', 'cta1', this)">コピー</button>
+      <button class="copy-btn" id="copyBtn1" onclick="copyFull(1, this)">コピー</button>
       <div class="result-text" id="result1"></div>
       <div class="cta-line" id="cta1" style="display:none"></div>
+      <div class="hashtag-line" id="hashtag1"></div>
+      <div class="copy-note">↑ コピーボタンで投稿文＋CTA＋ハッシュタグをまとめてコピーできます</div>
     </div>
 
     <div class="result-box">
       <div class="result-pattern-label">✦ パターン2</div>
-      <button class="copy-btn" onclick="copyFull('result2', 'cta2', this)">コピー</button>
+      <button class="copy-btn" id="copyBtn2" onclick="copyFull(2, this)">コピー</button>
       <div class="result-text" id="result2"></div>
       <div class="cta-line" id="cta2" style="display:none"></div>
+      <div class="hashtag-line" id="hashtag2"></div>
+      <div class="copy-note">↑ コピーボタンで投稿文＋CTA＋ハッシュタグをまとめてコピーできます</div>
     </div>
 
     <div class="result-box">
       <div class="result-pattern-label">✦ パターン3</div>
-      <button class="copy-btn" onclick="copyFull('result3', 'cta3', this)">コピー</button>
+      <button class="copy-btn" id="copyBtn3" onclick="copyFull(3, this)">コピー</button>
       <div class="result-text" id="result3"></div>
       <div class="cta-line" id="cta3" style="display:none"></div>
-    </div>
-
-    <div class="hashtag-box">
-      <div class="hashtag-label">🏷️ おすすめハッシュタグ（5個以内）</div>
-      <div class="hashtag-text" id="hashtagResult"></div>
+      <div class="hashtag-line" id="hashtag3"></div>
+      <div class="copy-note">↑ コピーボタンで投稿文＋CTA＋ハッシュタグをまとめてコピーできます</div>
     </div>
 
     <button class="reset-btn" onclick="resetAll()">🔄 もう一度作る</button>
@@ -515,6 +492,7 @@ let selectedGenre = "";
 let selectedFormat = "";
 let selectedPlatform = "";
 let selectedCtaType = "";
+let globalHashtags = "";
 
 function selectGenre(btn, value) {
   document.querySelectorAll(".genre-btn").forEach(b => b.classList.remove("active"));
@@ -537,11 +515,14 @@ function selectCtaType(btn, value) {
   selectedCtaType = value;
 }
 
-function copyFull(textId, ctaId, btn) {
-  const text = document.getElementById(textId).innerText;
-  const ctaEl = document.getElementById(ctaId);
-  const cta = ctaEl.style.display !== "none" ? "\n\n" + ctaEl.innerText : "";
-  navigator.clipboard.writeText(text + cta).then(() => {
+function copyFull(num, btn) {
+  const text = document.getElementById("result" + num).innerText;
+  const ctaEl = document.getElementById("cta" + num);
+  const cta = (ctaEl && ctaEl.style.display !== "none") ? "\n\n" + ctaEl.innerText : "";
+  const hashtags = globalHashtags ? "\n\n" + globalHashtags : "";
+  const full = text + cta + hashtags;
+
+  navigator.clipboard.writeText(full).then(() => {
     btn.textContent = "✅ コピー済み";
     btn.classList.add("copied");
     setTimeout(() => { btn.textContent = "コピー"; btn.classList.remove("copied"); }, 2000);
@@ -556,12 +537,8 @@ function resetAll() {
   document.getElementById("generateBtn").style.display = "block";
   document.getElementById("generateBtn").disabled = false;
   selectedGenre = ""; selectedFormat = ""; selectedPlatform = ""; selectedCtaType = "";
+  globalHashtags = "";
   window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-function buildCtaText(ctaText, url) {
-  if (!url) return ctaText;
-  return ctaText + "\n" + url;
 }
 
 async function generate() {
@@ -579,8 +556,8 @@ async function generate() {
 
   const isX = selectedPlatform.includes("X");
   const charLimit = isX ? "140文字以内" : "500文字以内";
-  const hasUrl = ctaUrl !== "";
   const hasCtaType = selectedCtaType !== "";
+  const hasUrl = ctaUrl !== "";
 
   const ctaInstruction = (hasCtaType || hasUrl)
     ? `
@@ -589,13 +566,11 @@ async function generate() {
 ・CTA文は1〜2行で自然に読者を誘導する文にすること。
 ・集客先の種類：${selectedCtaType || "外部コンテンツ"}
 ・投稿の型に合わせてCTAの言い回しを変えること。
-　　あるある型→「同じ悩みを抱えてる方へ、詳しくはこちら」
-　　失敗学び型→「同じ失敗をしたくない方へ、全部まとめました」
-　　セリフ型→「気になった方はプロフィールのリンクから」
-　　3段構成型→「手順とテンプレはこちらにまとめています」
-・URLは含めないこと（URLは別途表示する）
-・${isX ? "Xの場合はリプライ欄にURLを貼ることをalertに追記すること" : "ThreadsはURL直貼りOKなので特記不要"}
-`
+　　あるある型 →「同じ悩みを抱えてる方へ、詳しくはこちら」
+　　失敗学び型 →「同じ失敗をしたくない方へ、全部まとめました」
+　　セリフ型 →「気になった方はプロフィールのリンクから」
+　　3段構成型 →「手順とテンプレはこちらにまとめています」
+・URLは含めないこと（URLは別途表示する）`
     : `・cta1・cta2・cta3は空文字にすること。`;
 
   const systemPrompt = `あなたはSNSマーケティングの専門家です。
@@ -605,9 +580,9 @@ ThreadsやX（旧Twitter）でバズる投稿文を作るプロです。
 【出力ルール】
 ・必ずJSON形式のみで返す。説明文は一切不要。
 ・JSONのキーはpattern1, pattern2, pattern3, cta1, cta2, cta3, hashtags, alert の8つ。
-・pattern1〜3はそれぞれ異なるアプローチの投稿文（CTAは含めない）。
+・pattern1〜3はそれぞれ異なるアプローチの投稿文（CTAもハッシュタグも含めない）。
 ${ctaInstruction}
-・hashtagsは5個以内のハッシュタグ（スペース区切り）。
+・hashtagsは投稿先に合わせた5個以内のハッシュタグ（スペース区切り）。Threadsは多め・Xは2〜3個。
 ・alertはアルゴリズム注意事項があれば記載、なければ空文字。
 
 【投稿文のルール】
@@ -615,12 +590,9 @@ ${ctaInstruction}
 ・改行で余白を作る
 ・1行目は必ずスクロールを止める強いフック
 ・感情トリガー（驚き・共感・好奇心など）を必ず入れる
-・文字数：${charLimit}を目安（CTAは含まない）
+・文字数：${charLimit}を目安（CTAとハッシュタグは含まない）
 ・絵文字を効果的に使う（多すぎず）
-・押しつけがましくない自然な文体
-
-【出力例】
-{"pattern1":"投稿文1","pattern2":"投稿文2","pattern3":"投稿文3","cta1":"CTA文1","cta2":"CTA文2","cta3":"CTA文3","hashtags":"#タグ1 #タグ2","alert":""}`;
+・押しつけがましくない自然な文体`;
 
   const userPrompt = `以下の条件で投稿文を3パターン作ってください。
 
@@ -660,33 +632,41 @@ ${neta}`;
       };
     }
 
-    document.getElementById("result1").textContent = result.pattern1 || "";
-    document.getElementById("result2").textContent = result.pattern2 || "";
-    document.getElementById("result3").textContent = result.pattern3 || "";
-    document.getElementById("hashtagResult").textContent = result.hashtags || "";
+    globalHashtags = result.hashtags || "";
 
-    // CTA表示
+    // 投稿文セット
     ["1","2","3"].forEach(n => {
+      document.getElementById("result" + n).textContent = result["pattern" + n] || "";
+
+      // CTA
       const ctaEl = document.getElementById("cta" + n);
       const ctaText = result["cta" + n] || "";
       if (ctaText && (hasCtaType || hasUrl)) {
-        ctaEl.textContent = ctaUrl ? ctaText + "\n" + ctaUrl : ctaText;
+        ctaEl.textContent = hasUrl ? ctaText + "\n" + ctaUrl : ctaText;
         ctaEl.style.display = "block";
       } else {
         ctaEl.style.display = "none";
+      }
+
+      // ハッシュタグを各パターンに表示
+      const hashEl = document.getElementById("hashtag" + n);
+      if (globalHashtags) {
+        hashEl.textContent = globalHashtags;
+      } else {
+        hashEl.textContent = "";
       }
     });
 
     // アラート
     const alertBox = document.getElementById("algorithmAlert");
-    const alertText = document.getElementById("alertText");
+    const alertTextEl = document.getElementById("alertText");
     let alertMsg = result.alert || "";
-    if (isX && ctaUrl) {
+    if (isX && hasUrl) {
       alertMsg = (alertMsg ? alertMsg + "\n\n" : "") +
         "⚡ Xはリンクを本文に入れるとリーチが下がります。\nURLはリプライ欄（コメント欄）に別途貼り付けてください。";
     }
     if (alertMsg.trim()) {
-      alertText.textContent = alertMsg;
+      alertTextEl.textContent = alertMsg;
       alertBox.style.display = "block";
     } else {
       alertBox.style.display = "none";
